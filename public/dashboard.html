@@ -1,0 +1,34 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Dashboard — SECRETLY</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script></head><body>
+<header><a href="/" class="logo" style="color:inherit;text-decoration:none"><b>S</b>Secretly</a><button class="btn ghost" id="out" style="display:none">Logout</button></header>
+<section id="login" style="text-align:center;padding-top:60px"><h2>Masuk ke Secretly</h2><p class="mut" style="margin-bottom:16px">Login dengan Google untuk mengelola bot kamu.</p><button class="btn acc" id="gl">Lanjutkan dengan Google</button></section>
+<section id="app" style="display:none">
+<div class="card" style="text-align:center"><div class="mut">Selamat datang,</div><h2 id="nm" style="margin:4px 0"></h2><div class="mut" id="em"></div><br>
+<button class="btn" id="nb">+ Buat Bot</button><a class="btn ghost" id="ch" href="#">💬 Saluran WA</a></div>
+<div class="card stats"><div><b id="a">0</b><span>Total Bot</span></div><div><b class="ok" id="b">0</b><span>Online</span></div><div><b class="bad" id="c">0</b><span>Offline</span></div></div>
+<h2>List Bot</h2><div id="list"></div></section>
+<div id="modal"><div class="card"><h2>Aktifkan Bot</h2>
+<label class="mut">Nomor WhatsApp Bot</label><input id="ph" placeholder="62812xxxxxxx" inputmode="numeric">
+<label class="mut">Tipe Engine</label><select id="en"><option value="assistant">🤖 MD Asisten (76 fitur)</option><option value="store">🛍️ Store Bot (72 fitur)</option></select>
+<label class="mut">Paket</label><select id="pl"><option value="core">Core — Rp10.000 (15 Hari)</option><option value="plus">Plus — Rp20.000 (30 Hari)</option><option value="pro">Pro — Rp35.000 (30 Hari)</option><option value="elite">Elite — Rp65.000 (60 Hari)</option><option value="infinity">Infinity — Rp125.000 (360 Hari)</option></select>
+<div id="msg" class="mut"></div><button class="btn acc" id="go">Lanjut</button><button class="btn ghost" id="cl">Batal</button></div></div>
+<script>
+const $=i=>document.getElementById(i);let sb,tok;
+(async()=>{const c=await (await fetch('/api/config')).json();if(c.channel)$('ch').href=c.channel;
+sb=supabase.createClient(c.url,c.anon);
+$('gl').onclick=()=>sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.href}});
+$('out').onclick=async()=>{await sb.auth.signOut();location.reload()};
+const{data:{session}}=await sb.auth.getSession();if(!session)return;tok=session.access_token;
+$('login').style.display='none';$('app').style.display='block';$('out').style.display='';
+$('nm').textContent=session.user.user_metadata.full_name||'User';$('em').textContent=session.user.email;load()})();
+const api=(m,b)=>fetch('/api/bots',{method:m,headers:{Authorization:'Bearer '+tok,'Content-Type':'application/json'},body:b&&JSON.stringify(b)}).then(r=>r.json());
+async function load(){const l=await api('GET');if(!Array.isArray(l))return;
+$('a').textContent=l.length;$('b').textContent=l.filter(x=>x.status=='online').length;$('c').textContent=l.filter(x=>x.status!='online').length;
+$('list').innerHTML=l.map(x=>`<div class="card"><div class="row"><b>Bot #${x.id}</b><span class="mut"><i class="dot" style="background:var(--${x.status=='online'?'ok':'bad'})"></i>${x.status}</span></div>
+<div class="mut">${x.phone} • ${x.plan.toUpperCase()} • ${x.engine}</div>${x.pair_code&&x.status!='online'?`<div style="margin-top:8px">Kode Pairing: <code style="font-size:18px">${x.pair_code}</code></div>`:''}</div>`).join('')||'<p class="mut" style="text-align:center">Belum ada bot.</p>'}
+$('nb').onclick=()=>$('modal').classList.add('on');$('cl').onclick=()=>$('modal').classList.remove('on');
+$('go').onclick=async()=>{const r=await api('POST',{phone:$('ph').value.trim(),engine:$('en').value,plan:$('pl').value});
+if(r.error){$('msg').textContent=r.error;return}
+$('msg').innerHTML='Bot dibuat ✓ Simpan API key: <code>'+r.apiKey+'</code><br>Kode pairing muncul di list setelah panel memproses.';load();setInterval(load,5000)};
+</script></body></html>

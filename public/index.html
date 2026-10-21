@@ -1,0 +1,26 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>SECRETLY — Bot WhatsApp Tanpa Ribet</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"></head><body>
+<header><div class="logo"><b>S</b>Secretly</div><a class="btn acc" href="/dashboard">Masuk</a></header>
+<div class="hero"><span class="pill">🔒 #Secretly Server Utama</span><h1>Bot WhatsApp Diam-Diam Kerja, Kamu Tinggal Santai.</h1>
+<p>Hubungkan nomor, pilih paket, bot langsung jalan di server panel dedicated. Tanpa ngoding, tanpa jaga server.</p>
+<a class="btn" href="/dashboard">Mulai Sekarang →</a><a class="btn ghost" id="ch" href="#">💬 Join Saluran WhatsApp</a></div>
+<section><h2>Statistik Gateway</h2><div class="card"><div style="text-align:center"><div class="big" id="s-chats">–</div><div class="mut">Pesan Diproses</div></div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><div class="stats"><div><b id="s-total">–</b><span>Total Bot</span></div><div><b id="s-users">–</b><span>Pengguna</span></div><div><b id="s-online" class="ok">–</b><span>Online</span></div></div></div></section>
+<section><h2>Pilih Tipe Bot</h2>
+<div class="card">🤖 <b>MD Asisten</b> <span class="pill">76 fitur</span><br><span class="mut">Grup (tagall, antilink, welcome, warn), tools, games, cuaca, wiki, terjemah, catatan, to-do, AFK.</span></div>
+<div class="card">🛍️ <b>Store Bot</b> <span class="pill">72 fitur</span><br><span class="mut">Katalog produk, list, order, proses/done, info bayar, testimoni, promo, JPM broadcast + fitur grup.</span></div>
+<div class="card">🏆 <b>League & XP</b><br><span class="mut">Bronze → Legend. Menu bot menampilkan foto, developer, league, limit & uptime.</span></div></section>
+<section><h2>Kenapa Secretly?</h2>
+<div class="card">⚡ <b>Panel Dedicated</b><br><span class="mut">Bot berjalan di panel sendiri, uptime 24/7.</span></div>
+<div class="card">🔑 <b>API Gateway</b><br><span class="mut">Kirim pesan lewat REST + API key & rate limit.</span></div>
+<div class="card">🗄️ <b>Supabase Database</b><br><span class="mut">Data bot, sesi & statistik aman di cloud.</span></div>
+<div class="card">🛡️ <b>Secret Vault ✦ Baru</b><br><span class="mut">Backup sesi terenkripsi, bot bisa dipulihkan sekali klik.</span></div>
+<div class="card">🕶️ <b>Ghost Mode ✦ Baru</b><br><span class="mut">Anti-delete & anti-view-once otomatis.</span></div></section>
+<section><h2>Paket VIP</h2><div class="price">
+<div class="card">Core<br><b>Rp10.000</b><div class="mut">15 hari</div></div><div class="card">Plus<br><b>Rp20.000</b><div class="mut">30 hari</div></div>
+<div class="card">Pro<br><b>Rp35.000</b><div class="mut">30 hari</div></div><div class="card">Elite<br><b>Rp65.000</b><div class="mut">60 hari</div></div>
+<div class="card" style="grid-column:span 2">Infinity<br><b>Rp125.000</b><div class="mut">360 hari</div></div></div></section>
+<section><h2>Integrasi Webhook n8n</h2><div class="card mut">Teruskan tiap pesan masuk ke workflow n8n: <code>https://n8n.kamu/webhook/xxxxx</code></div></section>
+<script>
+fetch('/api/stats').then(r=>r.json()).then(s=>{for(const k of['chats','total','users','online'])document.getElementById('s-'+k).textContent=(s[k]||0).toLocaleString('id')}).catch(()=>{});
+fetch('/api/config').then(r=>r.json()).then(c=>{if(c.channel)document.getElementById('ch').href=c.channel}).catch(()=>{});
+</script></body></html>
